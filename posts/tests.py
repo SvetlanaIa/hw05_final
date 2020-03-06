@@ -53,7 +53,7 @@ class PostTest(TestCase):
         self.client.login(username="sarah", password="12345")
         self.group = Group.objects.create(
             title="test", slug="test", description="test")
-        with open("fixtures/zkxZrC5FZ_Y.jpg", "rb") as fp:
+        with open("posts/fixtures/zkxZrC5FZ_Y.jpg", "rb") as fp:
             self.post = self.client.post(
                 "/new/", {
                     "group": 1,
@@ -73,7 +73,7 @@ class PostTest(TestCase):
         self.group = Group.objects.create(
             title="test", slug="test", description="test")
 
-        with open("fixtures/test.txt", "rb") as fp:
+        with open("posts/fixtures/test.txt", "rb") as fp:
             self.post = self.client.post(
                 "/new/", {
                     "group": 1,
@@ -93,7 +93,7 @@ class PostTest(TestCase):
         self.group = Group.objects.create(
             title="test", slug="test", description="test")
 
-        with open("fixtures/test.txt", "rb") as fp:
+        with open("posts/fixtures/test.txt", "rb") as fp:
             self.post = self.client.post(
                 "/sarah/2/edit/", {"text": "fred", "image": fp}, follow=True)
 
