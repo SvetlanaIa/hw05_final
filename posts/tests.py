@@ -114,11 +114,9 @@ class PostTest(TestCase):
     def test_comment(self):
         self.client.login(username="sarah", password="12345")
        
-        self.comment = self.client.post(
-            "/sarah/1/comment/", {"text": "Hello!"})
+        self.client.post("/sarah/1/comment/", {"text": "Hello!"})
         self.client.logout()
-        self.comment = self.client.post(
-            "/sarah/1/comment/", {"text": "I want to sleep!"})
+        self.client.post("/sarah/1/comment/", {"text": "I want to sleep!"})
         
         response = self.client.get("/sarah/1/", follow=True)
        

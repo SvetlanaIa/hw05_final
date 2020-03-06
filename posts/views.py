@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.paginator import Paginator
-from django.http import HttpResponse
-from .forms import PostForm, CommentForm
-from .models import Post, Group, User, Comment, Follow
-from django.http import HttpResponseRedirect, request
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models.aggregates import Count
+from django.http import HttpResponse, HttpResponseRedirect, request
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import CommentForm, PostForm
+from .models import Comment, Follow, Group, Post, User
 
 
 def index(request):
@@ -184,12 +184,11 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     profile = get_object_or_404(User, username=username)
-    if (Follow.objects.filter(author=profile, user=request.user).exists() or request.user == profile):
-        return redirect("profile", username=profile)
-    else:
+    already_follows = Follow.objects.filter(author=profile, user=request.user).exists()
+    if not already_follows and request.user != profile:
         Follow.objects.create(user=request.user, author=profile)
-        return redirect("profile", username=profile)
-
+    return redirect("profile", username=profile)
+    
 
 @login_required
 def profile_unfollow(request, username):
