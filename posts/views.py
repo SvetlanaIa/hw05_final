@@ -170,9 +170,8 @@ def add_comment(request, username, post_id):
 
 @login_required
 def follow_index(request):
-    follows = Follow.objects.select_related(
-        "author", "user").filter(user=request.user)
-    authors = [follow.author for follow in follows]
+    authors = Follow.objects.filter(
+        user=request.user).values_list('author', flat=True)
     posts = Post.objects.filter(author__in=authors).order_by("-pub_date").all()
 
     paginator = Paginator(posts, 10)
@@ -185,9 +184,7 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     profile = get_object_or_404(User, username=username)
-    if request.user==profile:
-        return redirect("profile", username=profile)
-    if Follow.objects.filter(author=profile).all():
+    if (Follow.objects.filter(author=profile, user=request.user).exists() or request.user == profile):
         return redirect("profile", username=profile)
     else:
         Follow.objects.create(user=request.user, author=profile)

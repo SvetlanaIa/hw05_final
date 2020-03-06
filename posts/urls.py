@@ -11,9 +11,7 @@ urlpatterns = [
     path("<username>/", views.profile, name="profile"),
     path("<username>/<int:post_id>/", views.post_view, name="post"),
     path("<username>/<int:post_id>/edit", views.post_edit, name="post_edit"),
-    path('<username>/<int:post_id>/remove/',
-         views.post_remove, name='post_remove'),
-    path("<username>/<int:post_id>/comment",
-         views.add_comment, name="add_comment"),
+    path('<username>/<int:post_id>/remove/', views.post_remove, name='post_remove'),
+    path("<username>/<int:post_id>/comment/", views.add_comment, name="add_comment"),
     path("", views.index, name="index"),
 ]
